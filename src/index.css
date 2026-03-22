@@ -1,0 +1,20 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Outlook compat mode: strip unsupported CSS by overriding inherited values */
+.outlook-compat * {
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  background-image: none !important;
+  line-height: normal !important;
+}
+
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.18s ease-out both;
+}
