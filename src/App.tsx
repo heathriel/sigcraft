@@ -37,7 +37,7 @@ export function App() {
           </div>
         </div>
         <div className="flex items-center gap-4 text-xs text-gray-400">
-          <span>No account · No data stored · Shareable by URL</span>
+          <span>No account · Signature details are included in share links</span>
           <a
             href="https://github.com/heathriel/sigcraft"
             className="text-gray-400 hover:text-gray-600 transition-colors"
@@ -121,3 +121,4 @@ export function App() {
     </div>
   );
 }
+

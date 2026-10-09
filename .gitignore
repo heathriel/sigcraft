@@ -5,3 +5,7 @@ dist/
 .DS_Store
 *.log
 .wrangler/
+
+
+# Offline regression build
+.test-build/

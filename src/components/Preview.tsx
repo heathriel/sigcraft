@@ -118,6 +118,7 @@ export function Preview({ config, onToggleOutlook }: Props) {
 
       {/* Instructions */}
       <div className="text-xs text-gray-400 bg-gray-50 rounded-lg p-3 space-y-1">
+        <p>Share links contain your signature details. Remote logos contact their image host when displayed.</p>
         <p><strong className="text-gray-500">Gmail:</strong> Settings → See all settings → Signature → paste in the text area</p>
         <p><strong className="text-gray-500">Outlook:</strong> File → Options → Mail → Signatures → New → paste</p>
         <p><strong className="text-gray-500">Apple Mail:</strong> Mail → Preferences → Signatures → paste</p>
@@ -125,3 +126,4 @@ export function Preview({ config, onToggleOutlook }: Props) {
     </div>
   );
 }
+
