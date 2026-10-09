@@ -28,7 +28,7 @@ test('bounds fields without coercing arbitrary objects', () => {
 });
 test('only hex colors are accepted', () => {
   for (const payload of ['red; background:url(https://evil.invalid)', '"><img src=x>', '#fffffff', 'url(javascript:x)']) assert.equal(normalizeConfig({accentColor:payload}).accentColor, DEFAULT_CONFIG.accentColor);
-  assert.equal(normalizeConfig({accentColor:'#AbC'}).accentColor, '#AbC');
+  assert.equal(normalizeConfig({accentColor:'#AbC'}).accentColor, '#AAbbCC');
 });
 test('escapes every HTML metacharacter', () => assert.equal(escapeHtml('<a x="a&b">\'x\'</a>'), '&lt;a x=&quot;a&amp;b&quot;&gt;&#39;x&#39;&lt;/a&gt;'));
 test('web URLs reject dangerous protocols, credentials and attribute escapes', () => {

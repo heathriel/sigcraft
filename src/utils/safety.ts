@@ -13,7 +13,10 @@ export function normalizeConfig(value: unknown): SignatureConfig | null {
     if (typeof input[key] === 'string') result[key] = (input[key] as string).slice(0, 2048);
   }
   for (const key of COLOR_FIELDS) {
-    if (typeof input[key] === 'string' && HEX_COLOR.test(input[key] as string)) result[key] = input[key] as string;
+    if (typeof input[key] === 'string' && HEX_COLOR.test(input[key] as string)) {
+      const color = input[key] as string;
+      result[key] = color.length === 4 ? '#' + color.slice(1).split('').map(c => c + c).join('') : color;
+    }
   }
   if (input.template === 'minimal' || input.template === 'classic' || input.template === 'social') result.template = input.template;
   if (typeof input.outlookMode === 'boolean') result.outlookMode = input.outlookMode;
