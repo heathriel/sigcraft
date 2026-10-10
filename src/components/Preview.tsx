@@ -2,7 +2,7 @@ import { useRef } from "react";
 import { SignatureConfig } from "../types";
 import { renderTemplate } from "../templates";
 import { copySignatureHtml, copyHtmlSource } from "../utils/clipboard";
-import { buildShareUrl } from "../utils/urlState";
+import { buildShareUrl, encodeConfig, SHARE_LINK_ERROR } from "../utils/urlState";
 import { toast } from "./Toast";
 
 interface Props {
@@ -13,6 +13,7 @@ interface Props {
 export function Preview({ config, onToggleOutlook }: Props) {
   const sigRef = useRef<HTMLDivElement>(null);
   const html = renderTemplate(config);
+  const shareLinkAvailable = encodeConfig(config) !== null;
 
   async function handleCopySignature() {
     if (!sigRef.current) return;
@@ -35,6 +36,10 @@ export function Preview({ config, onToggleOutlook }: Props) {
 
   async function handleShare() {
     const url = buildShareUrl(config);
+    if (url === null) {
+      toast(SHARE_LINK_ERROR, "error");
+      return;
+    }
     try {
       await navigator.clipboard.writeText(url);
       toast("Share link copied to clipboard", "info");
@@ -87,6 +92,12 @@ export function Preview({ config, onToggleOutlook }: Props) {
         </div>
       </div>
 
+      {!shareLinkAvailable && (
+        <p id="share-link-error" role="alert" className="rounded-lg border border-amber-200 bg-amber-50 p-3 text-sm text-amber-900">
+          {SHARE_LINK_ERROR} Your current changes are not saved in the URL and will be lost if you reload.
+        </p>
+      )}
+
       {/* Action buttons */}
       <div className="flex gap-2 flex-wrap">
         <button
@@ -103,7 +114,9 @@ export function Preview({ config, onToggleOutlook }: Props) {
         </button>
         <button
           onClick={handleShare}
-          className="flex-1 min-w-[100px] border border-gray-200 hover:bg-gray-50 text-gray-700 font-medium text-sm px-4 py-2.5 rounded-lg transition-colors"
+          disabled={!shareLinkAvailable}
+          aria-describedby={!shareLinkAvailable ? "share-link-error" : undefined}
+          className="flex-1 min-w-[100px] border border-gray-200 hover:bg-gray-50 text-gray-700 font-medium text-sm px-4 py-2.5 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
         >
           Share Link
         </button>
