@@ -48,3 +48,14 @@ No backend. No analytics. No accounts. Everything runs in the browser.
 ## License
 
 MIT
+
+
+## Safe shared signatures
+
+Shared links contain the signature data in their URL fragment. They are not encrypted; anyone receiving the link can read those details. Do not put private information into a signature you intend to share. Remote logo images contact their image host when displayed; a no-referrer policy is requested in the web preview.
+
+Imported configurations are validated against the known fields and types, colors are restricted to hexadecimal values, and text is HTML-escaped in every template. Only HTTP(S) web/image links are accepted. Invalid email, phone, and web links render as plain text or are omitted rather than becoming active links. The same protections apply to the preview, copied HTML, and downloaded HTML.
+
+Share links are limited to 65,536 encoded fragment characters. If a configuration exceeds that limit or cannot be encoded, sharing is disabled with a visible warning and any stale URL fragment is removed. Your fields remain editable, and copying or downloading still works, but unsaved changes will be lost on reload. Shorten the fields to enable sharing again.
+
+Run `npm test` for the offline regression suite and `npm run build` for TypeScript and production build checks. CI runs both without application API keys or a deployment step. These checks do not replace testing pasted signatures in real Gmail, Outlook, and Apple Mail clients; the Outlook preview is a styling approximation, not an Outlook rendering engine.

@@ -1,11 +1,16 @@
+import { safeHttpUrl } from "./safety";
+
 /** Extract dominant colors from an image URL using canvas.
  *  Returns an array of hex strings, most-dominant first.
  *  Falls back gracefully if CORS blocks the image.
  */
 export async function extractColors(imageUrl: string, count = 4): Promise<string[]> {
+  const url = safeHttpUrl(imageUrl);
+  if (!url) return [];
   return new Promise((resolve) => {
     const img = new Image();
     img.crossOrigin = "anonymous";
+    img.referrerPolicy = "no-referrer";
 
     img.onload = () => {
       try {
@@ -29,9 +34,9 @@ export async function extractColors(imageUrl: string, count = 4): Promise<string
           if (brightness > 240 || brightness < 15) continue;
 
           // Quantize to reduce noise
-          const qr = Math.round(r / 32) * 32;
-          const qg = Math.round(g / 32) * 32;
-          const qb = Math.round(b / 32) * 32;
+          const qr = Math.min(255, Math.round(r / 32) * 32);
+          const qg = Math.min(255, Math.round(g / 32) * 32);
+          const qb = Math.min(255, Math.round(b / 32) * 32);
           const key = `${qr},${qg},${qb}`;
           if (!buckets[key]) buckets[key] = { r: qr, g: qg, b: qb, count: 0 };
           buckets[key].count++;
@@ -52,7 +57,7 @@ export async function extractColors(imageUrl: string, count = 4): Promise<string
     };
 
     img.onerror = () => resolve([]);
-    img.src = imageUrl;
+    img.src = url;
   });
 }
 
@@ -65,3 +70,4 @@ export function isDark(hex: string): boolean {
   const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
   return luminance < 0.5;
 }
+

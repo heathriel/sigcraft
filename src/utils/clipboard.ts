@@ -30,9 +30,9 @@ export async function copySignatureHtml(el: HTMLElement): Promise<CopyResult> {
     const sel = window.getSelection();
     sel?.removeAllRanges();
     sel?.addRange(range);
-    document.execCommand("copy");
+    const copied = document.execCommand("copy");
     sel?.removeAllRanges();
-    return { ok: true, method: "legacy" };
+    return { ok: copied, method: copied ? "legacy" : "failed" };
   } catch {
     return { ok: false, method: "failed" };
   }
@@ -47,3 +47,4 @@ export async function copyHtmlSource(html: string): Promise<CopyResult> {
     return { ok: false, method: "failed" };
   }
 }
+
